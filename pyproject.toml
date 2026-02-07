@@ -1,0 +1,9 @@
+[project]
+name = "organize-cli"
+version = "1.0.0"
+description = "Smart file organizer CLI with restore and duplicate detection"
+authors = [{name="Abhishek"}]
+requires-python = ">=3.8"
+
+[project.scripts]
+organize = "organize.cli:main"

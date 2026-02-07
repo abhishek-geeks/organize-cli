@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.organize_log.json
+dist/
+build/
+*.egg-info/
+.vscode/
+.env
