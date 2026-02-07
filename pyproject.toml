@@ -1,9 +1,58 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "organize-cli"
 version = "1.0.0"
-description = "Smart file organizer CLI with restore and duplicate detection"
-authors = [{name="Abhishek"}]
+description = "A smart command-line file organizer with recursive sorting, duplicate detection, and dry-run preview."
+readme = "README.md"
+license = { text = "MIT" }
+
+authors = [
+  { name = "Abhishek Geeks", email = "abhishekgeeks@gmail.com" }
+]
+
+maintainers = [
+  { name = "Abhishek Geeks", email = "abhishekgeeks@gmail.com" }
+]
+
 requires-python = ">=3.8"
+
+keywords = [
+  "cli",
+  "file-organizer",
+  "automation",
+  "productivity",
+  "python-cli",
+  "duplicate-removal",
+  "file-management"
+]
+
+classifiers = [
+  "Development Status :: 1 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Environment :: Console",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Utilities",
+  "Topic :: Software Development :: Libraries :: Python Modules"
+]
+
+dependencies = []
 
 [project.scripts]
 organize = "organize.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/abhishek-geeks/organize-cli"
+Repository = "https://github.com/abhishek-geeks/organize-cli"
+Documentation = "https://github.com/abhishek-geeks/organize-cli#readme"
+Issues = "https://github.com/abhishek-geeks/organize-cli/issues"
+Changelog = "https://github.com/abhishek-geeks/organize-cli/releases"
