@@ -1,8 +1,24 @@
+# Python cache
 __pycache__/
 *.pyc
-.organize_log.json
-dist/
+*.pyo
+*.pyd
+
+# Virtual environment
+.venv/
+venv/
+
+# Build artifacts
 build/
+dist/
 *.egg-info/
-.vscode/
-.env
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Organizer runtime file
+.organize_log.json
