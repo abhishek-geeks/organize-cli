@@ -1,3 +1,10 @@
+"""
+File type definitions for Organize CLI.
+
+This module defines file categories and their associated extensions.
+Files are sorted into these categories during organization.
+"""
+
 FILE_TYPES = {
     "Audio": [
         ".mp3",".wav",".aac",".flac",".m4a",".ogg",".wma",".aiff",".alac",".opus"
@@ -31,3 +38,4 @@ FILE_TYPES = {
         ".ttf",".otf",".woff",".woff2",".eot"
     ],
 }
+
