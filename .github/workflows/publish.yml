@@ -21,23 +21,41 @@ jobs:
     
     - name: Install build dependencies
       run: |
-        python -m pip install --upgrade pip
+        python -m pip install --upgrade pip setuptools wheel
         pip install build twine
+        echo "Build tools installed successfully"
     
     - name: Build distribution
-      run: python -m build
-    
-    - name: List built files
       run: |
-        echo "Built files:"
-        ls -lh dist/
+        echo "Starting build..."
+        python -m build
+        echo "Build completed"
+    
+    - name: Verify build artifacts
+      run: |
+        echo "Contents of dist/:"
+        ls -lah dist/
+        echo ""
+        echo "Checking for required files:"
+        if [ -f "dist/*.whl" ]; then echo "✓ Wheel found"; else echo "✗ Wheel missing"; fi
+        if [ -f "dist/*.tar.gz" ]; then echo "✓ Source dist found"; else echo "✗ Source dist missing"; fi
+    
+    - name: Check PyPI token
+      run: |
+        if [ -z "${{ secrets.PYPI_API_TOKEN }}" ]; then
+          echo "❌ ERROR: PYPI_API_TOKEN secret not set!"
+          exit 1
+        else
+          echo "✓ PYPI_API_TOKEN is set"
+        fi
     
     - name: Upload to PyPI
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
       run: |
-        echo "Publishing to PyPI..."
+        echo "Starting upload to PyPI..."
         python -m twine upload dist/* \
           --skip-existing \
-          --verbose
+          --verbose 2>&1
+        echo "Upload completed"
