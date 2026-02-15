@@ -6,8 +6,8 @@ on:
       - 'v*'
 
 jobs:
-  build:
-    name: Build Distribution
+  publish:
+    name: Build & Publish
     runs-on: ubuntu-latest
     
     steps:
@@ -19,57 +19,25 @@ jobs:
       with:
         python-version: '3.10'
     
-    - name: Install dependencies
+    - name: Install build dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install build wheel setuptools
+        pip install build twine
     
     - name: Build distribution
       run: python -m build
     
     - name: List built files
-      run: ls -lah dist/
-    
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: dist
-        path: dist/
-
-  publish:
-    name: Publish to PyPI
-    needs: build
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Download artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: dist
-        path: dist/
-    
-    - name: Verify files
       run: |
-        echo "Files to upload:"
-        ls -lah dist/
-        echo ""
-        echo "File count:"
-        ls dist/ | wc -l
-    
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-    
-    - name: Install twine
-      run: pip install twine
+        echo "Built files:"
+        ls -lh dist/
     
     - name: Upload to PyPI
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
       run: |
-        echo "Uploading to PyPI..."
+        echo "Publishing to PyPI..."
         python -m twine upload dist/* \
           --skip-existing \
           --verbose
