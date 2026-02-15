@@ -1,31 +1,34 @@
-name: Build & Publish
+name: Publish to PyPI
 
 on:
-  release:
-    types: [created, published]
   push:
     tags:
       - 'v*'
 
 jobs:
   build:
+    name: Build Distribution
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v4
     
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
     
-    - name: Install build tools
+    - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install build wheel setuptools
     
     - name: Build distribution
       run: python -m build
+    
+    - name: List built files
+      run: ls -lah dist/
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -34,33 +37,39 @@ jobs:
         path: dist/
 
   publish:
+    name: Publish to PyPI
     needs: build
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
     
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-    
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
         name: dist
         path: dist/
     
+    - name: Verify files
+      run: |
+        echo "Files to upload:"
+        ls -lah dist/
+        echo ""
+        echo "File count:"
+        ls dist/ | wc -l
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
     - name: Install twine
       run: pip install twine
     
-    - name: Publish to PyPI
+    - name: Upload to PyPI
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
       run: |
+        echo "Uploading to PyPI..."
         python -m twine upload dist/* \
-          --repository pypi \
           --skip-existing \
           --verbose
